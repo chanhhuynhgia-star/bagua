@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>七佛治世．先天八卦方位圖</title>
+<style>
+:root{
+  --ground:#0c1119;
+  --ground-2:#131b26;
+  --panel:#171f2c;
+  --line:rgba(232,225,211,.16);
+  --paper:#e8e1d3;
+  --soft:rgba(232,225,211,.60);
+  --faint:rgba(232,225,211,.36);
+
+  --qian:#c8452f;   /* 乾 南 火 */
+  --xun:#d8a13a;    /* 巽 西南 風 */
+  --kan:#cbb87e;    /* 坎 西 金 */
+  --gen:#a97a52;    /* 艮 西北 山 */
+  --kun:#3d6ea8;    /* 坤 北 水 */
+  --zhen:#8b6bb1;   /* 震 東北 雷 */
+  --li:#5f9e6b;     /* 離 東 木 */
+  --dui:#4bb0b8;    /* 兌 東南 澤 */
+
+  --serif:"Songti TC","Songti SC","Noto Serif CJK TC","Source Han Serif TC","SimSun",serif;
+  --sans:"PingFang TC","PingFang SC","Microsoft JhengHei","Noto Sans CJK TC",system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:
+    radial-gradient(120% 80% at 50% 0%, #1a2333 0%, var(--ground) 60%),
+    var(--ground);
+  color:var(--paper);
+  font-family:var(--sans);
+  line-height:1.75;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1080px;margin:0 auto;padding:clamp(20px,4vw,56px) clamp(16px,4vw,40px) 88px}
+
+/* ---------- 標題 ---------- */
+.masthead{display:flex;gap:28px;align-items:flex-start;margin-bottom:clamp(24px,4vw,44px)}
+.masthead h1{
+  font-family:var(--serif);
+  font-weight:600;
+  font-size:clamp(30px,5.2vw,46px);
+  letter-spacing:.22em;
+  margin:0;
+  line-height:1.25;
+}
+.masthead p{
+  margin:.6em 0 0;color:var(--soft);
+  font-size:clamp(13px,1.6vw,15px);max-width:46ch;
+}
+.seal{
+  flex:0 0 auto;width:58px;height:58px;border:1px solid var(--qian);
+  color:var(--qian);font-family:var(--serif);font-size:20px;
+  display:grid;place-content:center;letter-spacing:0;line-height:1.05;
+  text-align:center;margin-top:6px;
+}
+
+/* ---------- 八卦盤 ---------- */
+.plate-row{display:grid;grid-template-columns:minmax(0,1fr);gap:clamp(20px,3vw,40px)}
+@media(min-width:900px){.plate-row{grid-template-columns:minmax(0,1.05fr) minmax(300px,.95fr);align-items:center}}
+
+.plate{position:relative;width:100%;aspect-ratio:1/1;max-width:620px;margin:0 auto}
+.plate svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.frame-line{fill:none;stroke:var(--line);stroke-width:.3}
+.spoke{stroke:var(--line);stroke-width:.25}
+
+.node{
+  position:absolute;transform:translate(-50%,-50%);
+  width:clamp(78px,15.5vw,116px);aspect-ratio:1/1;
+  border:1px solid var(--nc,var(--line));border-radius:50%;
+  background:var(--ground-2);
+  color:var(--paper);font-family:var(--serif);
+  display:grid;place-content:center;gap:2px;text-align:center;
+  cursor:pointer;padding:0;
+  transition:background .25s ease, box-shadow .25s ease, transform .25s ease;
+}
+.node .tri{font-size:clamp(20px,3.6vw,27px);color:var(--nc);line-height:1}
+.node .nm{font-size:clamp(11px,2vw,15px);letter-spacing:.08em;margin-top:3px}
+.node .dir{font-family:var(--sans);font-size:clamp(9px,1.5vw,11px);color:var(--faint);letter-spacing:.14em}
+.node:hover{background:#1d2735}
+.node:focus-visible{outline:2px solid var(--paper);outline-offset:3px}
+.node[aria-pressed="true"]{
+  background:color-mix(in srgb, var(--nc) 18%, var(--ground-2));
+  box-shadow:0 0 0 1px var(--nc), 0 0 34px -8px var(--nc);
+  transform:translate(-50%,-50%) scale(1.06);
+}
+
+.core{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:31%;aspect-ratio:1/1;border-radius:50%;
+  border:1px solid var(--line);background:var(--ground-2);
+  display:grid;place-content:center;text-align:center;
+}
+.core .taiji{width:44px;height:44px;margin:0 auto 6px}
+.core b{display:block;font-family:var(--serif);font-weight:600;font-size:clamp(13px,2.2vw,17px);letter-spacing:.2em}
+.core span{display:block;font-size:clamp(9px,1.4vw,11px);color:var(--faint);letter-spacing:.14em;margin-top:2px}
+
+/* 入場：依降世次第 */
+@media (prefers-reduced-motion:no-preference){
+  .node,.core{animation:rise .7s cubic-bezier(.2,.7,.3,1) backwards}
+}
+@keyframes rise{from{opacity:0;filter:blur(4px)}to{opacity:1;filter:blur(0)}}
+
+/* ---------- 詳述 ---------- */
+.detail{border:1px solid var(--line);background:var(--panel);padding:clamp(20px,3vw,30px);min-height:340px}
+.detail .rank{font-family:var(--serif);font-size:13px;letter-spacing:.3em;color:var(--dc)}
+.detail h2{font-family:var(--serif);font-weight:600;font-size:clamp(26px,4.2vw,36px);letter-spacing:.14em;margin:.15em 0 .5em}
+.meta{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 20px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:16px 0;margin-bottom:18px}
+.meta div{min-width:0}
+.meta dt{font-size:11px;color:var(--faint);letter-spacing:.16em;margin-bottom:2px}
+.meta dd{margin:0;font-family:var(--serif);font-size:17px;letter-spacing:.06em}
+.mission{margin:0;font-size:15px;color:rgba(232,225,211,.86)}
+.gua-big{float:right;font-family:var(--serif);font-size:52px;color:var(--dc);line-height:1;margin:-4px 0 0 16px}
+
+/* ---------- 時序 ---------- */
+section{margin-top:clamp(44px,7vw,84px)}
+h3{font-family:var(--serif);font-weight:600;font-size:22px;letter-spacing:.2em;margin:0 0 6px}
+.lede{margin:0 0 22px;color:var(--soft);font-size:14px;max-width:60ch}
+
+.era{display:grid;gap:14px}
+@media(min-width:760px){.era{grid-template-columns:repeat(4,1fr)}}
+.era-col{border-top:2px solid var(--ec);padding-top:12px}
+.era-col h4{font-family:var(--serif);font-size:19px;letter-spacing:.2em;margin:0 0 2px}
+.era-col p{margin:0 0 12px;font-size:12px;color:var(--faint)}
+.era-col ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.era-col li{font-size:14px;color:rgba(232,225,211,.85);display:flex;gap:8px;align-items:baseline}
+.era-col li i{font-style:normal;font-family:var(--serif);color:var(--faint);font-size:12px;flex:0 0 auto}
+
+/* ---------- 表 ---------- */
+.tablewrap{overflow-x:auto;border:1px solid var(--line)}
+table{border-collapse:collapse;width:100%;min-width:660px;font-size:14px}
+th,td{text-align:left;padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+thead th{font-weight:400;font-size:11px;color:var(--faint);letter-spacing:.16em;background:var(--ground-2)}
+tbody tr:last-child td{border-bottom:none}
+tbody th{font-family:var(--serif);font-weight:600;font-size:16px;letter-spacing:.08em;white-space:nowrap}
+td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+.dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:8px;vertical-align:middle}
+tfoot td{padding:14px;font-size:13px;color:var(--soft);background:var(--ground-2)}
+tfoot .num{color:var(--paper);font-family:var(--serif);font-size:17px}
+
+footer{margin-top:56px;padding-top:20px;border-top:1px solid var(--line);color:var(--faint);font-size:12.5px;max-width:66ch}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="masthead">
+    <div class="seal">先天<br>八卦</div>
+    <div>
+      <h1>七佛治世</h1>
+      <p>七位古佛各鎮一方，代理佛伏羲氏補其西南，八位既足，八卦乃畫。此圖依原文所載卦位排列，方位取上南、下北、左東、右西。點選任一方位，可讀該佛的使命與掌盤年限。</p>
+    </div>
+  </header>
+
+  <div class="plate-row">
+    <div class="plate" id="plate">
+      <svg viewBox="0 0 100 100" aria-hidden="true">
+        <polygon class="frame-line" points="50,12 76.87,23.13 88,50 76.87,76.87 50,88 23.13,76.87 12,50 23.13,23.13"/>
+        <circle class="frame-line" cx="50" cy="50" r="38"/>
+        <circle class="frame-line" cx="50" cy="50" r="15.5"/>
+        <g class="spoke" id="spokes"></g>
+      </svg>
+
+      <div class="core">
+        <svg class="taiji" viewBox="0 0 100 100" aria-hidden="true">
+          <circle cx="50" cy="50" r="48" fill="none" stroke="rgba(232,225,211,.35)" stroke-width="2"/>
+          <path d="M50 2a48 48 0 000 96 24 24 0 010-48 24 24 0 000-48z" fill="rgba(232,225,211,.82)"/>
+          <circle cx="50" cy="26" r="7" fill="#131b26"/>
+          <circle cx="50" cy="74" r="7" fill="rgba(232,225,211,.82)"/>
+        </svg>
+        <b>道</b>
+        <span>無極生太極</span>
+      </div>
+    </div>
+
+    <article class="detail" id="detail" aria-live="polite"></article>
+  </div>
+
+  <section>
+    <h3>降世時序</h3>
+    <p class="lede">十二元會之中，七佛的降生與交盤落在卯、辰、巳、午四會；伏羲氏最後降世河南，排定天干地支，是為大道降世之始。</p>
+    <div class="era" id="era"></div>
+  </section>
+
+  <section>
+    <h3>一覽</h3>
+    <p class="lede">掌天盤年限依原文所記。</p>
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr><th scope="col">佛號</th><th scope="col">方位</th><th scope="col">卦位</th><th scope="col">德性</th><th scope="col">治世之功</th><th scope="col">掌天盤</th></tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+        <tfoot>
+          <tr><td colspan="5">八位合計</td><td class="num">38,700 年</td></tr>
+        </tfoot>
+      </table>
+    </div>
+  </section>
+
+  <footer>此圖為原文所述之整理與圖示，屬宗教傳說性質的世界觀敘事，非考古或歷史記載。</footer>
+</div>
+
+<script>
+const DATA = [
+  { key:"qian", rank:"初佛", name:"赤愛佛", dir:"南方", dirEn:"南", gua:"乾", tri:"☰", el:"火德",
+    era:"卯會降生", years:6000, yearsCn:"六千年", color:"var(--qian)",
+    short:"開發山島",
+    mission:"眾生靈中最靈。斯時人獸不分，以草為飲食，穴居野處，有言語而無文字。初佛教化世人開發山島。" },
+  { key:"xun", rank:"代理佛", name:"伏羲氏", dir:"西南方", dirEn:"西南", gua:"巽", tri:"☴", el:"風",
+    era:"降世河南", years:500, yearsCn:"五百年", color:"var(--xun)",
+    short:"始畫八卦",
+    mission:"觀前七聖之註作而明其意。七聖居七方，加以其本人共是八位，因而始畫八卦，以掛「道」義，為大道降世之始祖。巽卦為風，故以風為姓；依前聖以物代數之法註作，以天干、地支排為十二元會。上天以其有功，命掌天盤。" },
+  { key:"kan", rank:"四佛", name:"酉長庚", dir:"西方", dirEn:"西", gua:"坎", tri:"☵", el:"庚辛金",
+    era:"至巳會滿", years:7080, yearsCn:"七千零八十年", color:"var(--kan)",
+    short:"耕田．立語言",
+    mission:"取西方庚辛金得名。治世教民，力地耕田；化民以言語說話為宗旨。" },
+  { key:"gen", rank:"五佛", name:"空谷神", dir:"西北方", dirEn:"西北", gua:"艮", tri:"☶", el:"山谷虛空",
+    era:"巳會降生", years:5284, yearsCn:"五千二百八十四年", color:"var(--gen)",
+    short:"取石補天",
+    mission:"西北多山谷，天虛空。治世教民，開山取石，修補荒蕪，補造虛天。" },
+  { key:"kun", rank:"二佛", name:"生育佛", dir:"北方", dirEn:"北", gua:"坤", tri:"☷", el:"水德",
+    era:"至辰會滿", years:4800, yearsCn:"四千八百年", color:"var(--kun)",
+    short:"權掌生育",
+    mission:"北方屬水德，故權掌生育。斯時人獸分居，指明養育，以穴而住。" },
+  { key:"zhen", rank:"七佛", name:"繼天佛", dir:"東北方", dirEn:"東北", gua:"震", tri:"☳", el:"雷．連天",
+    era:"午會降生", years:5800, yearsCn:"五千八百年", color:"var(--zhen)",
+    short:"分陰陽",
+    mission:"因東北連天，取繼天立極之義。東北多冷，無人教化，所以觀天測地，知天地之陰陽；分出無極，知有太極之氣而化出陰陽，知無極為太極之本。此時未畫八卦，因不足其數。" },
+  { key:"li", rank:"三佛", name:"甲三春", dir:"東方", dirEn:"東", gua:"離", tri:"☲", el:"溫風木",
+    era:"辰會降生", years:3720, yearsCn:"三千七百二十年", color:"var(--li)",
+    short:"取火．衣葉",
+    mission:"三春多暖，東方多溫風木。治世教民，將草木培養成林，鑽木取火，以樹葉為衣，免失廉恥。" },
+  { key:"dui", rank:"六佛", name:"龍野氏", dir:"東南方", dirEn:"東南", gua:"兌", tri:"☱", el:"澤．多水",
+    era:"至午會滿", years:5516, yearsCn:"五千五百一十六年", color:"var(--dui)",
+    short:"濬河歸海",
+    mission:"東南多水。治水教民，開溝濬河，順水歸海，分出江、湖、海、河。" }
+];
+
+/* 盤面順時針：南 → 西南 → 西 → 西北 → 北 → 東北 → 東 → 東南 */
+const R = 38, ANG = [-90,-45,0,45,90,135,180,-135];
+const plate = document.getElementById("plate");
+const detail = document.getElementById("detail");
+const order = ["初佛","二佛","三佛","四佛","五佛","六佛","七佛","代理佛"];
+
+/* 輻線 */
+const spokes = document.getElementById("spokes");
+ANG.forEach(a=>{
+  const r = a*Math.PI/180;
+  const l = document.createElementNS("http://www.w3.org/2000/svg","line");
+  l.setAttribute("x1", 50+15.5*Math.cos(r)); l.setAttribute("y1", 50+15.5*Math.sin(r));
+  l.setAttribute("x2", 50+R*Math.cos(r));   l.setAttribute("y2", 50+R*Math.sin(r));
+  spokes.appendChild(l);
+});
+
+DATA.forEach((d,i)=>{
+  const a = ANG[i]*Math.PI/180;
+  const b = document.createElement("button");
+  b.className = "node"; b.type = "button";
+  b.style.setProperty("--nc", d.color);
+  b.style.left = (50 + R*Math.cos(a)) + "%";
+  b.style.top  = (50 + R*Math.sin(a)) + "%";
+  b.style.animationDelay = (order.indexOf(d.rank) * 90 + 200) + "ms";
+  b.setAttribute("aria-pressed","false");
+  b.innerHTML = `<span class="tri">${d.tri}</span><span class="nm">${d.name}</span><span class="dir">${d.dirEn}</span>`;
+  b.addEventListener("click", ()=>select(i));
+  b.addEventListener("keydown", e=>{
+    if(e.key==="ArrowRight"||e.key==="ArrowDown"){e.preventDefault();focusNode(i+1)}
+    if(e.key==="ArrowLeft"||e.key==="ArrowUp"){e.preventDefault();focusNode(i-1)}
+  });
+  plate.appendChild(b);
+});
+const nodes = [...plate.querySelectorAll(".node")];
+function focusNode(i){const n=nodes[(i+nodes.length)%nodes.length];n.focus();select(nodes.indexOf(n));}
+
+function select(i){
+  const d = DATA[i];
+  nodes.forEach((n,j)=>n.setAttribute("aria-pressed", j===i ? "true":"false"));
+  detail.style.setProperty("--dc", d.color);
+  detail.innerHTML = `
+    <div class="gua-big">${d.tri}</div>
+    <div class="rank">${d.rank}</div>
+    <h2>${d.name}</h2>
+    <dl class="meta">
+      <div><dt>降生方位</dt><dd>${d.dir}</dd></div>
+      <div><dt>卦位</dt><dd>${d.gua}卦</dd></div>
+      <div><dt>德性</dt><dd>${d.el}</dd></div>
+      <div><dt>元會</dt><dd>${d.era}</dd></div>
+      <div><dt>治世之功</dt><dd>${d.short}</dd></div>
+      <div><dt>掌天盤</dt><dd>${d.yearsCn}</dd></div>
+    </dl>
+    <p class="mission">${d.mission}</p>`;
+}
+select(0);
+
+/* 時序 */
+const ERAS = [
+  { n:"卯會", c:"var(--qian)", note:"人獸不分，草飲穴居", items:[["初佛","赤愛佛降生南方，開發山島"]] },
+  { n:"辰會", c:"var(--li)", note:"人獸分居，林木初成", items:[["二佛","生育佛掌盤至辰會滿"],["三佛","甲三春降生東方，鑽木取火"]] },
+  { n:"巳會", c:"var(--gen)", note:"耕田有語，開山補天", items:[["四佛","酉長庚掌盤至巳會滿"],["五佛","空谷神降生西北，取石補虛"]] },
+  { n:"午會", c:"var(--zhen)", note:"水歸其道，陰陽始分", items:[["六佛","龍野氏掌盤至午會滿"],["七佛","繼天佛降生東北，分出無極"],["代理佛","伏羲氏補西南，八卦乃畫"]] }
+];
+document.getElementById("era").innerHTML = ERAS.map(e=>`
+  <div class="era-col" style="--ec:${e.c}">
+    <h4>${e.n}</h4>
+    <p>${e.note}</p>
+    <ul>${e.items.map(([k,v])=>`<li><i>${k}</i><span>${v}</span></li>`).join("")}</ul>
+  </div>`).join("");
+
+/* 表：依降世次第 */
+document.getElementById("tbody").innerHTML =
+  [...DATA].sort((a,b)=>order.indexOf(a.rank)-order.indexOf(b.rank)).map(d=>`
+  <tr>
+    <th scope="row"><span class="dot" style="background:${d.color}"></span>${d.name}</th>
+    <td>${d.dir}</td>
+    <td>${d.gua}　${d.tri}</td>
+    <td>${d.el}</td>
+    <td>${d.short}</td>
+    <td class="num">${d.years.toLocaleString("en-US")} 年</td>
+  </tr>`).join("");
+</script>
+</body>
+</html>
